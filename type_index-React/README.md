@@ -1,6 +1,7 @@
 <div style='text-align:center'>
   <img src='https://www.easyicon.net/api/resizeApi.php?id=1223154&size=64' width=32/>
-  <img src='https://www.easyicon.net/api/resizeApi.php?id=1223154&size=64' width=64 alt='Pokemon!'/>
+  <img src='https://www.easyicon.net/api/resizeApi.php?id=1223154&size=64' width=64
+    alt='Pokemon!'/>
   <img src='https://www.easyicon.net/api/resizeApi.php?id=1223154&size=64' width=32/>
 </div>
 
@@ -18,15 +19,15 @@
 
 未来计划增加的功能：
 
-* 点击表格项切换所选属性
-* 通过方向键选择属性
+* √ 点击表格项切换所选属性
+* √ 通过方向键选择属性
 * 历史记录功能
 * 双属性
 
 Features to add in the future:
 
-* Click a table cell to switch type selected
-* Select type by using direction keys
+* √ Click a table cell to switch type selected
+* √ Select type by using direction keys
 * History record
 * Double types in a table
 
