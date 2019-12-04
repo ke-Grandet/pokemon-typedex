@@ -356,5 +356,3 @@ const CounterTable = {
         // },
     ]
 };
-
-export default CounterTable;
