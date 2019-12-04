@@ -1,0 +1,50 @@
+body {font: 14px 'Century Gothic', Futura, sans-serif; margin: 0px;}
+
+/* 整体 */
+#CounterTableSingle{padding: 28px; background: rgb(255, 248, 240);
+  display: flex;
+}
+#CounterTableSingle td{text-align: center;}
+
+/* TypeLabel */
+#CounterTableSingle .TypeLabel{display: inline-block; text-align: center; font-weight: bold;
+  cursor: pointer;
+  width: 19px;
+  height: 19px;
+  padding: 1px;
+  border-radius: 15%;
+  color:  white;
+  background:rgb(98, 152, 135);
+  -moz-user-select: none; -webkit-user-select: none;
+}
+
+/* TypeTitle */
+#CounterTableSingle .TypeTitle{
+  border-collapse: collapse; display: inline-block; background: lightgray;
+  padding: 1px 5px;
+}
+#CounterTableSingle .TypeTitle td{
+  font-size: 12px; width: 30px; height: 28px; text-align: center;
+}
+/* TypeTitle input */
+#CounterTableSingle .TypeTitle input{display: none;}
+#CounterTableSingle .TypeTitle input:checked+label{outline: 5px solid white;}
+  
+/* TypeShow */
+#CounterTableSingle .TypeShow{
+  cursor: default; border-collapse: collapse; display: inline-block;
+}
+#CounterTableSingle .TypeShow td{
+  width: 64px;
+  height: 42px;
+  border: 1px solid rgb(0, 128, 0);
+  background: aliceblue;
+}
+#CounterTableSingle .TypeShow .blank{background: white}
+#CounterTableSingle .TypeShow .effZero{background: lightblue;}
+#CounterTableSingle .TypeShow .effHalf{background: OldLace}
+#CounterTableSingle .TypeShow .effNormal{background: PeachPuff}
+#CounterTableSingle .TypeShow .effDouble{background: Salmon }
+#CounterTableSingle .TypeShow .yLine{border-right: 2px solid green}
+#CounterTableSingle .TypeShow .xLine{border-top: 2px solid green}
+/* #CounterTableSingle td:hover{outline: 2px solid darkgreen;} */
