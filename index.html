@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <title>Counter Table</title>
+  <meta name="author" content="Cola King" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <script crossorigin src="https://cdn.staticfile.org/react/16.4.0/umd/react.development.js">
+  </script>
+  <script crossorigin src="https://cdn.staticfile.org/react-dom/16.4.0/umd/react-dom.development.js">
+  </script>
+  <script src="https://cdn.staticfile.org/babel-standalone/6.26.0/babel.min.js">
+  </script>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="CounterTableSingle"></div>
+</body>
+
+<script type='text/babel'>
+  // 整体
+  class CounterTableSingle extends React.Component {
+    constructor(props) {
+      super(props);
+      // 将数组中每个对象的index赋值为该对象的数组索引值
+      let arrType = CounterTable.types.map((obj, index) => {
+        obj.index = index; return obj;
+      });
+      // 对象Map，存储属性对象，key为name，value为object）
+      let mapType = new Map();
+      for (let index in arrType)
+        mapType.set(arrType[index].name, arrType[index]);
+      this.state = {
+        type1: null,
+        type2: null,
+        arrType: arrType,  // 属性数组（一维，存储属性对象）
+        mapType: mapType,  // Map，依据name检索属性对象
+        arrTypeShow: this.getArrEmpty()  // 展示数组（三维，4×4格，每格存储若干属性）
+      };
+    }
+    // 辅助方法，定位x、y
+    matchPosition(isX, n) {
+      return isX ? (n <= 0 ? 0 : 2 + Math.log(n) / Math.log(2)) :
+        n <= 0 ? 3 : 1 - Math.log(n) / Math.log(2);
+    }
+    // 得到空的4×4×0数组
+    getArrEmpty() {
+      let arr = new Array(4);
+      for (let i = 0; i < arr.length; i++) {
+        arr[i] = new Array(4);
+        for (let j = 0; j < arr[i].length; j++) {
+          arr[i][j] = [];
+        }
+      }
+      return arr;
+    }
+    // 绑定给单格属性的事件
+    clickType = (typeIndex) => {
+      let arrTypeShow = this.getArrEmpty()
+      let type = this.state.arrType[typeIndex];
+      for (let objName in type.against) {
+        let x = this.matchPosition(true, type.against[objName].atk);
+        let y = this.matchPosition(false, type.against[objName].def);
+        arrTypeShow[y][x].push({
+          index: this.state.mapType.get(objName).index,
+          color: this.state.mapType.get(objName).color,
+          name: this.state.mapType.get(objName).name,
+          description: this.state.mapType.get(objName).description
+        });
+      }
+      this.setState({
+        type1: type,
+        arrTypeShow: arrTypeShow
+      });
+    }
+    render() {
+      return [
+        <TypeShow key='2'
+          arrTypeShow={this.state.arrTypeShow}
+          onClick={(typeIndex) => this.clickType(typeIndex)}
+          typeSelected={this.state.type1} />,
+        <TypeTitle key='1'
+          arrType={this.state.arrType}
+          onClick={(typeIndex) => this.clickType(typeIndex)}
+          typeSelected={this.state.type1} />
+      ];
+    };
+  }
+
+  // 标题区组件|TypeTitle
+  class TypeTitle extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        count: 2  // count为每行个数
+      }
+    }
+    componentDidMount() {
+      document.addEventListener('keydown', this.hotkey);
+    }
+    componentWillUnmount() {
+      document.removeEventListener('keydown', this.hotkey);
+    }
+    // 监听事件
+    hotkey = (e) => {
+      let index = null;
+      if (this.props.typeSelected === null) {
+        if (e.keyCode === 37 || e.keyCode === 38)
+          index = this.props.arrType.length - 1;
+        else if (e.keyCode === 39 || e.keyCode === 40)
+          index = 0;
+      }
+      else {
+        let count = this.state.count;
+        index = this.props.typeSelected.index;
+        switch (e.keyCode) {
+          case 37:  // left arrow
+            if (index > 0 && index % count > 0)
+              index = index - 1;
+            break;
+          case 38:  // up arrow
+            if (index - count >= 0)
+              index = index - count;
+            break;
+          case 39:  // right arrow
+            if (index < this.props.arrType.length - 1 && index % count < count - 1)
+              index = index + 1;
+            break;
+          case 40:  // down arrow
+            if (index + count < this.props.arrType.length)
+              index = index + count;
+            break;
+          default: break;
+        }
+      }
+      if (index !== null) this.props.onClick(index);
+    }
+    // 逐两个创建
+    createCell = () => {
+      let arrTr = [];
+      let arrResult = [];
+      let arrType = this.props.arrType;
+      for (let index in arrType) {
+        let typeSelected = this.props.typeSelected;
+        let isChecked = (typeSelected !== null) ?
+          (String(typeSelected.index) === index) : false;
+        arrTr.push(
+          <td key={index}>
+            <input type='radio' name='type'
+              id={index}
+              checked={isChecked}
+              onChange={() => this.props.onClick(index)} />
+            <TypeLabel for={index}
+              color={arrType[index].color}
+              name={arrType[index].name} />
+          </td>
+        );
+        if (index % this.state.count === this.state.count - 1) {
+          arrResult.push(<tr key={index}>{arrTr}</tr>);
+          arrTr = [];
+        }
+      }
+      if (arrTr.length > 0)
+        arrResult.push(<tr key={-1}>{arrTr}</tr>);
+      return arrResult;
+    }
+    render() {
+      return (
+        <table className='TypeTitle'>
+          <tbody>{this.createCell()}</tbody>
+        </table>
+      );
+    }
+  }
+
+  // 展示区组件|TypeShow
+  class TypeShow extends React.Component {
+    // 逐行创建
+    createShowCells = (row) => {
+      let arrResult = [];
+      let arrRow = this.props.arrTypeShow[row];
+      for (let i = 0; i < arrRow.length; i++) {
+        let arrItem = arrRow[i];
+        arrItem = arrItem.map((value, key) => {
+          return (
+            <TypeLabel key={key}
+              color={value.color}
+              name={value.name}
+              onClick={() => this.props.onClick(value.index)} />
+          );
+        });
+        arrResult.push(<td key={i}>{arrItem}</td>);
+      }
+      arrResult.push(<td key={-1} className="blank">※</td>);
+      return arrResult;
+    }
+    // 创建左下角属性标签
+    createTypeSelected = () => {
+      let type = this.props.typeSelected;
+      return (type === null ? null :
+        <TypeLabel color={type.color} name={type.name} />);
+    }
+    render() {
+      return (
+        <table className='TypeShow'>
+          <tbody>
+            <tr>
+              <td className="blank yLine">D</td><td className="blank">※</td>
+              <td className="blank">※</td><td className="blank">※</td>
+              <td className="blank">※</td><td className="blank">※</td>
+            </tr>
+            <tr>
+              <td className='effDouble yLine'>×2</td>
+              {this.createShowCells(0)}
+            </tr>
+            <tr>
+              <td className='effNormal yLine'>×1</td>
+              {this.createShowCells(1)}
+            </tr>
+            <tr>
+              <td className='effHalf yLine'>×½</td>
+              {this.createShowCells(2)}
+            </tr>
+            <tr>
+              <td className='effZero yLine'>×0</td>
+              {this.createShowCells(3)}
+            </tr>
+            <tr className='xLine'>
+              <td className="blank yLine">
+                {this.createTypeSelected()}
+              </td>
+              <td className='effZero'>×0</td><td className='effHalf'>×½</td>
+              <td className='effNormal'>×1</td><td className='effDouble'>×2</td>
+              <td className="blank">A</td>
+            </tr>
+          </tbody>
+        </table>
+      );
+    }
+  }
+
+  // 属性标签|TypeLabel
+  function TypeLabel(props) {
+    return (
+      <label className='TypeLabel'
+        style={{ background: props.color }}
+        onClick={props.onClick}
+        htmlFor={props.for}>
+        {props.name}
+      </label>
+    );
+  }
+
+  ReactDOM.render(<CounterTableSingle />, document.getElementById('CounterTableSingle'));
+</script>
+
+<style>
+  body {
+    font: 14px 'Century Gothic', Futura, sans-serif;
+    margin: 0px;
+  }
+
+  /* 整体 */
+  #CounterTableSingle {
+    padding: 28px;
+    background: rgb(255, 248, 240);
+    display: flex;
+  }
+
+  #CounterTableSingle td {
+    text-align: center;
+  }
+
+  /* TypeLabel */
+  #CounterTableSingle .TypeLabel {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+    width: 19px;
+    height: 19px;
+    padding: 1px;
+    border-radius: 10%;
+    color: white;
+    background: rgb(98, 152, 135);
+    -moz-user-select: none;
+    -webkit-user-select: none;
+  }
+
+  /* TypeTitle */
+  #CounterTableSingle .TypeTitle {
+    border-collapse: collapse;
+    display: inline-block;
+    background: lightgray;
+    padding: 1px 5px;
+  }
+
+  #CounterTableSingle .TypeTitle td {
+    font-size: 12px;
+    width: 30px;
+    height: 28px;
+    text-align: center;
+  }
+
+  /* TypeTitle input */
+  #CounterTableSingle .TypeTitle input {
+    display: none;
+  }
+
+  #CounterTableSingle .TypeTitle input:checked+label {
+    outline: 5px solid white;
+  }
+
+  /* TypeShow */
+  #CounterTableSingle .TypeShow {
+    cursor: default;
+    border-collapse: collapse;
+    display: inline-block;
+  }
+
+  #CounterTableSingle .TypeShow td {
+    width: 64px;
+    height: 42px;
+    border: 1px solid rgb(0, 128, 0);
+    background: aliceblue;
+  }
+
+  #CounterTableSingle .TypeShow .blank {
+    background: white
+  }
+
+  #CounterTableSingle .TypeShow .effZero {
+    background: lightblue;
+  }
+
+  #CounterTableSingle .TypeShow .effHalf {
+    background: OldLace
+  }
+
+  #CounterTableSingle .TypeShow .effNormal {
+    background: PeachPuff
+  }
+
+  #CounterTableSingle .TypeShow .effDouble {
+    background: Salmon
+  }
+
+  #CounterTableSingle .TypeShow .yLine {
+    border-right: 2px solid green
+  }
+
+  #CounterTableSingle .TypeShow .xLine {
+    border-top: 2px solid green
+  }
+</style>
+
+<script>
+  const CounterTable = {
+    "types": [
+      // 0 普
+      {
+        "index": 0,
+        "name": "普",
+        "value": "normal",
+        "color": "rgb(180, 180, 163)",
+        "description": "一般系",
+        "against": {
+          "鬼": { "atk": 0, "def": 0 },
+          "岩": { "atk": 0.5, "def": 1 },
+          "钢": { "atk": 0.5, "def": 1 },
+          "格": { "atk": 1, "def": 2 }
+        }
+      },
+      // 1 火
+      {
+        "index": 1,
+        "name": "火",
+        "value": "fire",
+        "color": "rgb(250, 48, 40)",
+        "description": "火系",
+        "against": {
+          "火": { "atk": 0.5, "def": 0.5 },
+          "龙": { "atk": 0.5, "def": 1 },
+          "水": { "atk": 0.5, "def": 2 },
+          "岩": { "atk": 0.5, "def": 2 },
+          "虫": { "atk": 2, "def": 0.5 },
+          "草": { "atk": 2, "def": 0.5 },
+          "冰": { "atk": 2, "def": 0.5 },
+          "钢": { "atk": 2, "def": 0.5 },
+          "地": { "atk": 1, "def": 2 },
+          "妖": { "atk": 1, "def": 0.5 },
+        }
+      },
+      // 2 水
+      {
+        "index": 2,
+        "name": "水",
+        "value": "water",
+        "color": "rgb(53, 148, 250)",
+        "description": "水系",
+        "against": {
+          "水": { "atk": 0.5, "def": 0.5 },
+          "龙": { "atk": 0.5, "def": 1 },
+          "草": { "atk": 0.5, "def": 2 },
+          "火": { "atk": 2, "def": 0.5 },
+          "地": { "atk": 2, "def": 1 },
+          "岩": { "atk": 2, "def": 1 },
+          "电": { "atk": 1, "def": 2 },
+          "冰": { "atk": 1, "def": 0.5 },
+          "钢": { "atk": 1, "def": 0.5 },
+        }
+      },
+      // 3 电
+      {
+        "index": 3,
+        "name": "电",
+        "value": "electric",
+        "color": "rgb(253, 195, 67)",
+        "description": "电气系",
+        "against": {
+          "地": { "atk": 0, "def": 2 },
+          "电": { "atk": 0.5, "def": 0.5 },
+          "草": { "atk": 0.5, "def": 1 },
+          "龙": { "atk": 0.5, "def": 1 },
+          "飞": { "atk": 2, "def": 0.5 },
+          "水": { "atk": 2, "def": 1 },
+          "钢": { "atk": 1, "def": 0.5 },
+        }
+      },
+      // 4 草
+      {
+        "index": 4,
+        "name": "草",
+        "value": "grass",
+        "color": "rgb(115, 198, 87)",
+        "description": "草系",
+        "against": {
+          "虫": { "atk": 0.5, "def": 2 },
+          "毒": { "atk": 0.5, "def": 2 },
+          "飞": { "atk": 0.5, "def": 2 },
+          "火": { "atk": 0.5, "def": 2 },
+          "草": { "atk": 0.5, "def": 0.5 },
+          "龙": { "atk": 0.5, "def": 1 },
+          "钢": { "atk": 0.5, "def": 1 },
+          "地": { "atk": 2, "def": 0.5 },
+          "水": { "atk": 2, "def": 0.5 },
+          "岩": { "atk": 2, "def": 1 },
+          "冰": { "atk": 1, "def": 2 },
+          "电": { "atk": 1, "def": 0.5 },
+        }
+      },
+      // 5 冰
+      {
+        "index": 5,
+        "name": "冰",
+        "value": "ice",
+        "color": "rgb(116, 220, 253)",
+        "description": "冰系",
+        "against": {
+          "火": { "atk": 0.5, "def": 2 },
+          "钢": { "atk": 0.5, "def": 2 },
+          "水": { "atk": 0.5, "def": 1 },
+          "冰": { "atk": 0.5, "def": 0.5 },
+          "飞": { "atk": 2, "def": 1 },
+          "地": { "atk": 2, "def": 1 },
+          "草": { "atk": 2, "def": 1 },
+          "龙": { "atk": 2, "def": 1 },
+          "格": { "atk": 1, "def": 2 },
+          "岩": { "atk": 1, "def": 2 },
+        }
+      },
+      // 6 格
+      {
+        "index": 6,
+        "name": "格",
+        "value": "fighting",
+        "color": "rgb(177, 72, 64)",
+        "description": "格斗系",
+        "against": {
+          "鬼": { "atk": 0, "def": 1 },
+          "虫": { "atk": 0.5, "def": 0.5 },
+          "毒": { "atk": 0.5, "def": 1 },
+          "飞": { "atk": 0.5, "def": 2 },
+          "超": { "atk": 0.5, "def": 2 },
+          "妖": { "atk": 0.5, "def": 2 },
+          "普": { "atk": 2, "def": 1 },
+          "岩": { "atk": 2, "def": 0.5 },
+          "冰": { "atk": 2, "def": 1 },
+          "钢": { "atk": 2, "def": 1 },
+          "恶": { "atk": 2, "def": 0.5 }
+        }
+      },
+      // 7 毒
+      {
+        "index": 7,
+        "name": "毒",
+        "value": "poison",
+        "color": "rgb(159, 75, 142)",
+        "description": "毒系",
+        "against": {
+          "钢": { "atk": 0, "def": 1 },
+          "毒": { "atk": 0.5, "def": 0.5 },
+          "地": { "atk": 0.5, "def": 2 },
+          "岩": { "atk": 0.5, "def": 1 },
+          "鬼": { "atk": 0.5, "def": 1 },
+          "草": { "atk": 2, "def": 0.5 },
+          "妖": { "atk": 2, "def": 0.5 },
+          "超": { "atk": 1, "def": 2 },
+          "虫": { "atk": 1, "def": 0.5 },
+          "格": { "atk": 1, "def": 0.5 },
+        }
+      },
+      // 8 地
+      {
+        "index": 8,
+        "name": "地",
+        "value": "ground",
+        "color": "rgb(216, 178, 87)",
+        "description": "地面系",
+        "against": {
+          "飞": { "atk": 0, "def": 1 },
+          "虫": { "atk": 0.5, "def": 1 },
+          "草": { "atk": 0.5, "def": 2 },
+          "毒": { "atk": 2, "def": 0.5 },
+          "火": { "atk": 2, "def": 1 },
+          "电": { "atk": 2, "def": 0 },
+          "岩": { "atk": 2, "def": 0.5 },
+          "钢": { "atk": 2, "def": 1 },
+          "水": { "atk": 1, "def": 2 },
+          "冰": { "atk": 1, "def": 2 },
+        }
+      },
+      // 9 飞
+      {
+        "index": 9,
+        "name": "飞",
+        "value": "flying",
+        "color": "rgb(95, 147, 250)",
+        "description": "飞行系",
+        "against": {
+          "电": { "atk": 0.5, "def": 2 },
+          "岩": { "atk": 0.5, "def": 2 },
+          "钢": { "atk": 0.5, "def": 1 },
+          "虫": { "atk": 2, "def": 0.5 },
+          "格": { "atk": 2, "def": 0.5 },
+          "草": { "atk": 2, "def": 0.5 },
+          "地": { "atk": 1, "def": 0 },
+          "冰": { "atk": 1, "def": 2 },
+        }
+      },
+      // 10 超
+      {
+        "index": 10,
+        "name": "超",
+        "value": "psychic ",
+        "color": "rgb(250, 69, 142)",
+        "description": "超能力系",
+        "against": {
+          "恶": { "atk": 0, "def": 2 },
+          "超": { "atk": 0.5, "def": 0.5 },
+          "钢": { "atk": 0.5, "def": 1 },
+          "毒": { "atk": 2, "def": 1 },
+          "格": { "atk": 2, "def": 0.5 },
+          "虫": { "atk": 1, "def": 2 },
+          "鬼": { "atk": 1, "def": 2 },
+        }
+      },
+      // 11 虫
+      {
+        "index": 11,
+        "name": "虫",
+        "value": "bug",
+        "color": "rgb(163, 179, 53)",
+        "description": "虫系",
+        "against": {
+          "毒": { "atk": 0.5, "def": 1 },
+          "飞": { "atk": 0.5, "def": 2 },
+          "格": { "atk": 0.5, "def": 0.5 },
+          "火": { "atk": 0.5, "def": 2 },
+          "鬼": { "atk": 0.5, "def": 1 },
+          "钢": { "atk": 0.5, "def": 1 },
+          "妖": { "atk": 0.5, "def": 1 },
+          "草": { "atk": 2, "def": 0.5 },
+          "超": { "atk": 2, "def": 1 },
+          "恶": { "atk": 2, "def": 1 },
+          "岩": { "atk": 1, "def": 2 },
+          "地": { "atk": 1, "def": 0.5 },
+        }
+      },
+      // 12 岩
+      {
+        "index": 12,
+        "name": "岩",
+        "value": "rock",
+        "color": "rgb(179, 160, 99)",
+        "description": "岩石系",
+        "against": {
+          "地": { "atk": 0.5, "def": 2 },
+          "格": { "atk": 0.5, "def": 2 },
+          "钢": { "atk": 0.5, "def": 2 },
+          "虫": { "atk": 2, "def": 1 },
+          "飞": { "atk": 2, "def": 0.5 },
+          "火": { "atk": 2, "def": 0.5 },
+          "冰": { "atk": 2, "def": 1 },
+          "水": { "atk": 1, "def": 2 },
+          "草": { "atk": 1, "def": 2 },
+          "普": { "atk": 1, "def": 0.5 },
+          "毒": { "atk": 1, "def": 0.5 },
+        }
+      },
+      // 13 鬼
+      {
+        "index": 13,
+        "name": "鬼",
+        "value": "ghost",
+        "color": "rgb(93, 95, 176)",
+        "description": "幽灵系",
+        "against": {
+          "普": { "atk": 0, "def": 0 },
+          "恶": { "atk": 0.5, "def": 2 },
+          "超": { "atk": 2, "def": 1 },
+          "鬼": { "atk": 2, "def": 2 },
+          "虫": { "atk": 1, "def": 0.5 },
+          "毒": { "atk": 1, "def": 0.5 },
+          "格": { "atk": 1, "def": 0 },
+        }
+      },
+      // 14 龙
+      {
+        "index": 14,
+        "name": "龙",
+        "value": "dragon",
+        "color": "rgb(108, 97, 230)",
+        "description": "龙系",
+        "against": {
+          "妖": { "atk": 0, "def": 2 },
+          "钢": { "atk": 0.5, "def": 1 },
+          "龙": { "atk": 2, "def": 2 },
+          "冰": { "atk": 1, "def": 2 },
+          "火": { "atk": 1, "def": 0.5 },
+          "水": { "atk": 1, "def": 0.5 },
+          "电": { "atk": 1, "def": 0.5 },
+          "草": { "atk": 1, "def": 0.5 },
+        }
+      },
+      // 15 恶
+      {
+        "index": 15,
+        "name": "恶",
+        "value": "dark",
+        "color": "rgb(108, 76, 63)",
+        "description": "恶系",
+        "against": {
+          "格": { "atk": 0.5, "def": 2 },
+          "恶": { "atk": 0.5, "def": 0.5 },
+          "妖": { "atk": 0.5, "def": 2 },
+          "超": { "atk": 2, "def": 0 },
+          "鬼": { "atk": 2, "def": 0.5 },
+          "虫": { "atk": 1, "def": 2 },
+        }
+      },
+      // 16 钢
+      {
+        "index": 16,
+        "name": "钢",
+        "value": "steel",
+        "color": "rgb(162, 162, 179)",
+        "description": "钢系",
+        "against": {
+          "水": { "atk": 0.5, "def": 1 },
+          "火": { "atk": 0.5, "def": 2 },
+          "电": { "atk": 0.5, "def": 1 },
+          "钢": { "atk": 0.5, "def": 0.5 },
+          "冰": { "atk": 2, "def": 0.5 },
+          "岩": { "atk": 2, "def": 0.5 },
+          "妖": { "atk": 2, "def": 0.5 },
+          "地": { "atk": 1, "def": 2 },
+          "格": { "atk": 1, "def": 2 },
+          "普": { "atk": 1, "def": 0.5 },
+          "虫": { "atk": 1, "def": 0.5 },
+          "飞": { "atk": 1, "def": 0.5 },
+          "草": { "atk": 1, "def": 0.5 },
+          "超": { "atk": 1, "def": 0.5 },
+          "龙": { "atk": 1, "def": 0.5 },
+          "毒": { "atk": 1, "def": 0 },
+        }
+      },
+      // 17 妖
+      {
+        "index": 17,
+        "name": "妖",
+        "value": "fairy",
+        "color": "rgb(252, 161, 251)",
+        "description": "妖精系",
+        "against": {
+          "毒": { "atk": 0.5, "def": 2 },
+          "火": { "atk": 0.5, "def": 1 },
+          "钢": { "atk": 0.5, "def": 2 },
+          "格": { "atk": 2, "def": 0.5 },
+          "龙": { "atk": 2, "def": 0 },
+          "恶": { "atk": 2, "def": 0.5 },
+          "虫": { "atk": 1, "def": 0.5 },
+        }
+      },
+      // 18 ？
+      // {
+      //     "index": 18,
+      //     "name": "？",
+      //     "value": "???",
+      //     "color": "rgb(98, 152, 135)",
+      //     "description": "???",
+      //     "against": {}
+      // },
+    ]
+  };
+</script>
+
+</html>
