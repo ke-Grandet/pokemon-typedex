@@ -17,16 +17,16 @@
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="CounterTableSingle"></div>
+  <div id="TypeIndexSingle"></div>
 </body>
 
 <script type='text/babel'>
   // 整体
-  class CounterTableSingle extends React.Component {
+  class TypeIndexSingle extends React.Component {
     constructor(props) {
       super(props);
       // 将数组中每个对象的index赋值为该对象的数组索引值
-      let arrType = CounterTable.types.map((obj, index) => {
+      let arrType = TypeIndex.types.map((obj, index) => {
         obj.index = index; return obj;
       });
       // 对象Map，存储属性对象，key为name，value为object）
@@ -254,7 +254,7 @@
     );
   }
 
-  ReactDOM.render(<CounterTableSingle />, document.getElementById('CounterTableSingle'));
+  ReactDOM.render(<TypeIndexSingle />, document.getElementById('TypeIndexSingle'));
 </script>
 
 <style>
@@ -264,18 +264,18 @@
   }
 
   /* 整体 */
-  #CounterTableSingle {
+  #TypeIndexSingle {
     padding: 28px;
     background: rgb(255, 248, 240);
     display: flex;
   }
 
-  #CounterTableSingle td {
+  #TypeIndexSingle td {
     text-align: center;
   }
 
   /* TypeLabel */
-  #CounterTableSingle .TypeLabel {
+  #TypeIndexSingle .TypeLabel {
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -292,14 +292,14 @@
   }
 
   /* TypeTitle */
-  #CounterTableSingle .TypeTitle {
+  #TypeIndexSingle .TypeTitle {
     border-collapse: collapse;
     display: inline-block;
     background: lightgray;
     padding: 1px 5px;
   }
 
-  #CounterTableSingle .TypeTitle td {
+  #TypeIndexSingle .TypeTitle td {
     font-size: 12px;
     width: 30px;
     height: 28px;
@@ -307,59 +307,59 @@
   }
 
   /* TypeTitle input */
-  #CounterTableSingle .TypeTitle input {
+  #TypeIndexSingle .TypeTitle input {
     display: none;
   }
 
-  #CounterTableSingle .TypeTitle input:checked+label {
+  #TypeIndexSingle .TypeTitle input:checked+label {
     outline: 5px solid white;
   }
 
   /* TypeShow */
-  #CounterTableSingle .TypeShow {
+  #TypeIndexSingle .TypeShow {
     cursor: default;
     border-collapse: collapse;
     display: inline-block;
   }
 
-  #CounterTableSingle .TypeShow td {
+  #TypeIndexSingle .TypeShow td {
     width: 64px;
     height: 42px;
     border: 1px solid rgb(0, 128, 0);
     background: aliceblue;
   }
 
-  #CounterTableSingle .TypeShow .blank {
+  #TypeIndexSingle .TypeShow .blank {
     background: white
   }
 
-  #CounterTableSingle .TypeShow .effZero {
+  #TypeIndexSingle .TypeShow .effZero {
     background: lightblue;
   }
 
-  #CounterTableSingle .TypeShow .effHalf {
+  #TypeIndexSingle .TypeShow .effHalf {
     background: OldLace
   }
 
-  #CounterTableSingle .TypeShow .effNormal {
+  #TypeIndexSingle .TypeShow .effNormal {
     background: PeachPuff
   }
 
-  #CounterTableSingle .TypeShow .effDouble {
+  #TypeIndexSingle .TypeShow .effDouble {
     background: Salmon
   }
 
-  #CounterTableSingle .TypeShow .yLine {
+  #TypeIndexSingle .TypeShow .yLine {
     border-right: 2px solid green
   }
 
-  #CounterTableSingle .TypeShow .xLine {
+  #TypeIndexSingle .TypeShow .xLine {
     border-top: 2px solid green
   }
 </style>
 
 <script>
-  const CounterTable = {
+  const TypeIndex = {
     "types": [
       // 0 普
       {

@@ -20,28 +20,28 @@ class TypeTitle extends React.Component {
   hotkey = (e) => {
     let index = null;
     if(this.props.typeSelected === null){
-      if(e.keyCode === 37 || e.keyCode === 38)
+      if(e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 65 || e.keyCode === 87)
         index = this.props.arrType.length - 1;
-      else if(e.keyCode === 39 || e.keyCode === 40)
+      else if(e.keyCode === 39 || e.keyCode === 40 || e.keyCode === 68 || e.keyCode === 83)
         index = 0;
     }
     else{
       let count = this.state.count;
       index = this.props.typeSelected.index;
       switch(e.keyCode){
-        case 37:  // left arrow
+        case 37: case 65:  // left: '←' || 'A'
           if(index > 0 && index % count > 0)
             index = index - 1;
           break;
-        case 38:  // up arrow
+        case 38: case 87:  // up: '↑' || 'W'
           if(index - count >= 0)
             index = index - count;
           break;
-        case 39:  // right arrow
+        case 39: case 68:  // right: '→' || 'D'
           if(index < this.props.arrType.length - 1 && index % count < count - 1)
             index = index + 1;
           break;
-        case 40:  // down arrow
+        case 40: case 83:  // down: '↓' || 'S'
           if(index + count < this.props.arrType.length)
             index = index + count;
           break;

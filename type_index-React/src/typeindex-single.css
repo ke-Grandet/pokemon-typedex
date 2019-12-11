@@ -1,0 +1,57 @@
+body {font: 14px 'Century Gothic', Futura, sans-serif; margin: 0px;}
+
+/* 整体 */
+#TypeIndexSingle{display: flex;
+  background: #fff8f0;
+  padding: 28px;
+}
+#TypeIndexSingle td{text-align: center;}
+
+/* TypeLabel */
+#TypeIndexSingle .TypeLabel{display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  cursor: pointer;
+  width: 19px;
+  height: 19px;
+  padding: 1px;
+  border-radius: 15%;
+  color:  white;
+  background:#629887;
+  -moz-user-select: none; -webkit-user-select: none;
+}
+
+/* TypeTitle */
+#TypeIndexSingle .TypeTitle{border-collapse: collapse;
+  background: lightgray;
+  display: inline-block;
+  padding: 1px 5px;
+}
+#TypeIndexSingle .TypeTitle td{text-align: center;
+  font-size: 12px;
+  width: 30px;
+  height: 28px;
+}
+/* TypeTitle input */
+#TypeIndexSingle .TypeTitle input{display: none;}
+#TypeIndexSingle .TypeTitle input:checked+label{outline: 5px solid white;}
+  
+/* TypeShow */
+#TypeIndexSingle .TypeShow{border-collapse: collapse;
+  display: inline-block;
+  cursor: default;
+}
+#TypeIndexSingle .TypeShow td{background: aliceblue;
+  width: 64px;
+  height: 42px;
+  border: 1px solid #008000;
+}
+#TypeIndexSingle .TypeShow .blank{background: white}
+#TypeIndexSingle .TypeShow .effZero{background: lightblue;}
+#TypeIndexSingle .TypeShow .effHalf{background: OldLace}
+#TypeIndexSingle .TypeShow .effNormal{background: PeachPuff}
+#TypeIndexSingle .TypeShow .effDouble{background: Salmon }
+#TypeIndexSingle .TypeShow .yLine{border-right: 2px solid green}
+#TypeIndexSingle .TypeShow .xLine{border-top: 2px solid green}
+/* #TypeIndexSingle td:hover{outline: 2px solid darkgreen;} */

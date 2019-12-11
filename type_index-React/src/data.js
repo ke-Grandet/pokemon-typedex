@@ -1,4 +1,4 @@
-const CounterTable = {
+const TypeIndex = {
     "types": [
         // 0 普
         {
@@ -357,4 +357,4 @@ const CounterTable = {
     ]
 };
 
-export default CounterTable;
+export default TypeIndex;
