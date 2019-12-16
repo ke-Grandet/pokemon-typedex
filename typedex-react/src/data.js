@@ -1,4 +1,4 @@
-const TypeIndex = {
+const TypeData = {
     "types": [
         // 0 普
         {
@@ -53,26 +53,9 @@ const TypeIndex = {
                 "钢": {"atk": 1, "def": 0.5},
             }
         },
-        // 3 电
+        // 3 草
         {
             "index": 3,
-            "name": "电",
-            "value": "electric",
-            "color": "rgb(253, 195, 67)",
-            "description": "电气系",
-            "against": {
-                "地": {"atk": 0, "def": 2},
-                "电": {"atk": 0.5, "def": 0.5},
-                "草": {"atk": 0.5, "def": 1},
-                "龙": {"atk": 0.5, "def": 1},
-                "飞": {"atk": 2, "def": 0.5},
-                "水": {"atk": 2, "def": 1},
-                "钢": {"atk": 1, "def": 0.5},
-            }
-        },
-        // 4 草
-        {
-            "index": 4,
             "name": "草",
             "value": "grass",
             "color": "rgb(115, 198, 87)",
@@ -90,6 +73,23 @@ const TypeIndex = {
                 "岩": {"atk": 2, "def": 1},
                 "冰": {"atk": 1, "def": 2},
                 "电": {"atk": 1, "def": 0.5},
+            }
+        },
+        // 4 电
+        {
+            "index": 4,
+            "name": "电",
+            "value": "electric",
+            "color": "rgb(253, 195, 67)",
+            "description": "电气系",
+            "against": {
+                "地": {"atk": 0, "def": 2},
+                "电": {"atk": 0.5, "def": 0.5},
+                "草": {"atk": 0.5, "def": 1},
+                "龙": {"atk": 0.5, "def": 1},
+                "飞": {"atk": 2, "def": 0.5},
+                "水": {"atk": 2, "def": 1},
+                "钢": {"atk": 1, "def": 0.5},
             }
         },
         // 5 冰
@@ -357,4 +357,4 @@ const TypeIndex = {
     ]
 };
 
-export default TypeIndex;
+export default TypeData;

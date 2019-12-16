@@ -1,0 +1,9 @@
+body {font: 14px 'Century Gothic', Futura, sans-serif; margin: 0px;}
+
+#App>table{
+    border-collapse: collapse;
+}
+#App>table td{
+    text-align: center;
+    border: 1px solid #000000;
+}

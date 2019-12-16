@@ -1,14 +1,7 @@
 body {font: 14px 'Century Gothic', Futura, sans-serif; margin: 0px;}
 
-/* 整体 */
-#TypeIndexSingle{display: flex;
-  background: #fff8f0;
-  padding: 28px;
-}
-#TypeIndexSingle td{text-align: center;}
-
 /* TypeLabel */
-#TypeIndexSingle .TypeLabel{display: inline-flex;
+.TypeLabel{display: inline-flex;
   justify-content: center;
   align-items: center;
   font-weight: bold;
@@ -21,6 +14,13 @@ body {font: 14px 'Century Gothic', Futura, sans-serif; margin: 0px;}
   background:#629887;
   -moz-user-select: none; -webkit-user-select: none;
 }
+
+/* 整体 */
+#TypeIndexSingle{display: flex;
+  background: #fff8f0;
+  padding: 28px;
+}
+#TypeIndexSingle td{text-align: center;}
 
 /* TypeTitle */
 #TypeIndexSingle .TypeTitle{border-collapse: collapse;

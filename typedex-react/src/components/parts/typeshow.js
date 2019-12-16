@@ -39,19 +39,19 @@ class TypeShow extends React.Component{
             <td className="blank">※</td><td className="blank">※</td>
           </tr>
           <tr>
-            <td className='effDouble yLine'>×2</td>
+            <td className='effDouble yLine'>{this.props.effect.doubleEffect}</td>
             {this.createShowCells(0)}
           </tr>
           <tr>
-            <td className='effNormal yLine'>×1</td>
+            <td className='effNormal yLine'>{this.props.effect.normalEffect}</td>
             {this.createShowCells(1)}
           </tr>
           <tr>
-            <td className='effHalf yLine'>×½</td>
+            <td className='effHalf yLine'>{this.props.effect.halfEffect}</td>
             {this.createShowCells(2)}
           </tr>
           <tr>
-            <td className='effZero yLine'>×0</td>
+            <td className='effZero yLine'>{this.props.effect.zeroEffect}</td>
             {this.createShowCells(3)}
           </tr>
           <tr className='xLine'>

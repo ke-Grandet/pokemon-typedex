@@ -1,25 +1,19 @@
 import React from 'react';
-import './typeindex-single.css';  // 导入样式
-import TypeIndex from './data.js';  // 导入数据内容
-import TypeTitle from './components/typetitle.js';  // 导入标题区表格组件
-import TypeShow from './components/typeshow.js';  // 导入展示区表格组件
+import './css/typeindex-single.css';  // 导入样式
+import TypeTitle from './parts/typetitle.js';  // 导入标题区表格组件
+import TypeShow from './parts/typeshow.js';  // 导入展示区表格组件
 
 
 // 整体
 class TypeIndexSingle extends React.Component{
   constructor(props){
     super(props);
-    // 将数组中每个对象的index赋值为该对象的数组索引值
-    let arrType = TypeIndex.types.map((obj, index)=>{obj.index = index; return obj;});
-    // 对象Map，存储属性对象，key为name，value为object）
-    let mapType = new Map();
-    for(let index in arrType)
-      mapType.set(arrType[index].name, arrType[index]);
+    let arrType = this.props.arrType;  // 导入数据内容
+    // 初始化内部数据
     this.state = {
       type1: null,
-      type2: null,
       arrType: arrType,  // 属性数组（一维，存储属性对象）
-      mapType: mapType,  // Map，依据name检索属性对象
+      mapType: this.props.mapType,  // Map，依据name检索属性对象
       arrTypeShow: this.getArrEmpty()  // 展示数组（三维，4×4格，每格存储若干属性）
     };
   }
@@ -63,7 +57,8 @@ class TypeIndexSingle extends React.Component{
         <TypeShow key='2'
           arrTypeShow={this.state.arrTypeShow}
           onClick={(typeIndex) => this.clickType(typeIndex)}
-          typeSelected={this.state.type1} />
+          typeSelected={this.state.type1}
+          effect={this.props.effect} />
         <TypeTitle key='1'
           arrType={this.state.arrType}
           onClick={(typeIndex) => this.clickType(typeIndex)}
