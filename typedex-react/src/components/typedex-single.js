@@ -1,11 +1,11 @@
 import React from 'react';
-import './css/typeindex-single.css';  // 导入样式
+import './css/typedex-single.css';  // 导入样式
 import TypeTitle from './parts/typetitle.js';  // 导入标题区表格组件
 import TypeShow from './parts/typeshow.js';  // 导入展示区表格组件
 
 
 // 整体
-class TypeIndexSingle extends React.Component{
+class TypedexSingle extends React.Component{
   constructor(props){
     super(props);
     let arrType = this.props.arrType;  // 导入数据内容
@@ -33,9 +33,9 @@ class TypeIndexSingle extends React.Component{
     return arr;
   }
   // 绑定给单格属性的事件
-  clickType = (typeIndex)=> {
+  clickType = (typedex)=> {
     let arrTypeShow = this.getArrEmpty()
-    let type = this.state.arrType[typeIndex];
+    let type = this.state.arrType[typedex];
     for(let objName in type.against){
       let x = this.matchPosition(true, type.against[objName].atk);
       let y = this.matchPosition(false, type.against[objName].def);
@@ -53,19 +53,19 @@ class TypeIndexSingle extends React.Component{
   }
   render(){
     return (
-      <div id='TypeIndexSingle'>
+      <div id='TypedexSingle'>
         <TypeShow key='2'
           arrTypeShow={this.state.arrTypeShow}
-          onClick={(typeIndex) => this.clickType(typeIndex)}
+          onClick={(typedex) => this.clickType(typedex)}
           typeSelected={this.state.type1}
           effect={this.props.effect} />
         <TypeTitle key='1'
           arrType={this.state.arrType}
-          onClick={(typeIndex) => this.clickType(typeIndex)}
+          onClick={(typedex) => this.clickType(typedex)}
           typeSelected={this.state.type1} />
       </div>
     );
   };
 }
 
-export default TypeIndexSingle;
+export default TypedexSingle;

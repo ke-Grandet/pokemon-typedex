@@ -2,7 +2,7 @@ import React from 'react';
 import TypeLabel from './parts/typelabel';
 
 
-class TypeIndexTable extends React.Component{
+class TypedexTable extends React.Component{
     constructor(props){
         super(props);
         this.state = {
@@ -47,4 +47,4 @@ class TypeIndexTable extends React.Component{
     }
 }
 
-export default TypeIndexTable;
+export default TypedexTable;

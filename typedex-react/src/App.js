@@ -1,16 +1,10 @@
 import React from 'react';
 import './App.css';
-import TypeIndexSingle from './components/typeindex-single';
-import TypeIndexTable from './components/typeindex-table';
+import TypedexSingle from './components/typedex-single';
+import TypedexTable from './components/typedex-table';
 import TypeData from './data';
 
 
-var zeroEffect = '×0';
-var quaterEffect = '×¼';
-var halfEffect = '×½';
-var normalEffect = '×1';
-var doubleEffect = '×2';
-var quadrupleEffect = '×4';
 class App extends React.Component{
     constructor(props){
         super(props);
@@ -37,11 +31,11 @@ class App extends React.Component{
         }
         return (
             <div id='App'>
-                <TypeIndexSingle key='1'
+                <TypedexSingle key='1'
                     arrType={this.state.arrType}
                     mapType={this.state.mapType}
                     effect={effect}/>
-                <TypeIndexTable key='3'
+                <TypedexTable key='3'
                     arrType={this.state.arrType}
                     mapType={this.state.mapType}/>
             </div>
