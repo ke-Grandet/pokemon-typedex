@@ -1,12 +1,47 @@
 <!DOCTYPE html>
 <html lang="zh-cmn-Hans">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Pokemon Typedex</title>
+    <script src='./L2D-of-404/L2Dwidget.0.min.js'></script>
+    <script src='./L2D-of-404/L2Dwidget.min.js'></script>
 </head>
+
 <body>
-    <h1>404</h1>
+    <h2>404 NOT FOUND</h2>
+    <img src="https://www.runoob.com/wp-content/themes/runoob/assets/img/404.jpg">
+    <div id="live2d-widget">
+        <canvas id="live2dcanvas" width="160" height="320"
+            style="position: fixed; opacity: 0.7; z-index: 99999; pointer-events: none;">
+        </canvas>
+    </div>
 </body>
+<script type="text/javascript">
+    L2Dwidget.init({
+        "model": {
+            jsonPath: 
+                "https://unpkg.com/live2d-widget-model-koharu/assets/koharu.model.json",
+            "scale": 1
+        },
+        "display": {
+            "position": "right",
+            "width": 80,
+            "height": 160,
+            "hOffset": 0,  // horizon 横向位置
+            "vOffset": -20  // vertical 纵向位置
+        },
+        "mobile": {
+            "show": true,
+            "scale": 0.5
+        },
+        "react": {
+            "opacityDefault": 0.7,
+            "opacityOnHover": 0.2
+        }
+    });
+</script>
+
 </html>
