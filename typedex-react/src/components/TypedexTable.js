@@ -1,5 +1,5 @@
 import React from 'react';
-import TypeLabel from './parts/typelabel';
+// import TypeLabel from './parts/typelabel';
 
 
 class TypedexTable extends React.Component{
@@ -21,11 +21,15 @@ class TypedexTable extends React.Component{
                 </td>
             );
             let arrTd = new Array(this.state.arrType.length + 1).fill(<td></td>);
-            arrTd[0] = <td>{value.name}</td>;
+            arrTd = arrTd.map((value, key)=>{
+                value = <td key={key-1}></td>;
+                return value;
+            });
+            arrTd[0] = <td key='-1'>{value.name}</td>;
             for(let name in value.against){
                 let type = this.state.mapType.get(name);
                 if(value.against[name].def !== 1)
-                arrTd[type.index + 1] = <td key={type.index}>{value.against[name].def}</td>;
+                arrTd[type.index+1] = <td key={type.index}>{value.against[name].def}</td>;
             }
             arrTr.push(
                 <tr key={key}>
@@ -33,16 +37,18 @@ class TypedexTable extends React.Component{
                 </tr>
             )
         });
-        arrTr.unshift(<tr>{arrFirstTr}</tr>);
+        arrTr.unshift(<tr key='-1'>{arrFirstTr}</tr>);
         return arrTr;
     }
     render(){
         return (
-            <table style={{border: 1+'px solid black'}}>
-                <tbody>
-                    {this.createFirstRow()}
-                </tbody>
-            </table>
+            <div id='TypedexTable'>
+                <table>
+                    <tbody>
+                        {this.createFirstRow()}
+                    </tbody>
+                </table>
+            </div>
         )
     }
 }

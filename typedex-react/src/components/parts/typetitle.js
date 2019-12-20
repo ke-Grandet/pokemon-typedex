@@ -81,9 +81,11 @@ class TypeTitle extends React.Component {
   }
   render() {
     return (
-      <table className='TypeTitle'>
-        <tbody>{this.createCell()}</tbody>
-      </table>
+      <div id='TypeTitle'>
+        <table>
+          <tbody>{this.createCell()}</tbody>
+        </table>
+      </div>
     );
   }
 }

@@ -1,8 +1,7 @@
 import React from 'react';
-import './css/typedex-single.css';  // 导入样式
+import 'css/TypedexSingle.css';  // 导入样式
 import TypeTitle from './parts/typetitle.js';  // 导入标题区表格组件
 import TypeShow from './parts/typeshow.js';  // 导入展示区表格组件
-
 
 // 整体
 class TypedexSingle extends React.Component{

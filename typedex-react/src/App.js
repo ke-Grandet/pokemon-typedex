@@ -1,7 +1,8 @@
 import React from 'react';
-import './App.css';
-import TypedexSingle from './components/typedex-single';
-import TypedexTable from './components/typedex-table';
+import './css/App.css';
+import TypedexSingle from './components/TypedexSingle';
+import TypedexDouble from './components/TypedexDouble';
+import TypedexTable from './components/TypedexTable';
 import TypeData from './data';
 
 
@@ -34,10 +35,12 @@ class App extends React.Component{
                 <TypedexSingle key='1'
                     arrType={this.state.arrType}
                     mapType={this.state.mapType}
-                    effect={effect}/>
+                    effect={effect} />
+                <TypedexDouble key='2'
+                    arrType={this.state.arrType} />
                 <TypedexTable key='3'
                     arrType={this.state.arrType}
-                    mapType={this.state.mapType}/>
+                    mapType={this.state.mapType} />
             </div>
         )
     };

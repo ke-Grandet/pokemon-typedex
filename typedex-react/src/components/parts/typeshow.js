@@ -31,39 +31,41 @@ class TypeShow extends React.Component{
   }
   render(){
     return (
-      <table className='TypeShow'>
-        <tbody>
-          <tr>
-            <td className="blank yLine">D</td><td className="blank">※</td>
-            <td className="blank">※</td><td className="blank">※</td>
-            <td className="blank">※</td><td className="blank">※</td>
-          </tr>
-          <tr>
-            <td className='effDouble yLine'>{this.props.effect.doubleEffect}</td>
-            {this.createShowCells(0)}
-          </tr>
-          <tr>
-            <td className='effNormal yLine'>{this.props.effect.normalEffect}</td>
-            {this.createShowCells(1)}
-          </tr>
-          <tr>
-            <td className='effHalf yLine'>{this.props.effect.halfEffect}</td>
-            {this.createShowCells(2)}
-          </tr>
-          <tr>
-            <td className='effZero yLine'>{this.props.effect.zeroEffect}</td>
-            {this.createShowCells(3)}
-          </tr>
-          <tr className='xLine'>
-            <td className="blank yLine">
-              {this.createTypeSelected()}
-            </td>
-            <td className='effZero'>×0</td><td className='effHalf'>×½</td>
-            <td className='effNormal'>×1</td><td className='effDouble'>×2</td>
-            <td className="blank">A</td>
-          </tr>
-        </tbody>
-      </table>
+      <div id='TypeShow'>
+        <table>
+          <tbody>
+            <tr>
+              <td className="blank yLine">D</td><td className="blank">※</td>
+              <td className="blank">※</td><td className="blank">※</td>
+              <td className="blank">※</td><td className="blank">※</td>
+            </tr>
+            <tr>
+              <td className='effDouble yLine'>{this.props.effect.doubleEffect}</td>
+              {this.createShowCells(0)}
+            </tr>
+            <tr>
+              <td className='effNormal yLine'>{this.props.effect.normalEffect}</td>
+              {this.createShowCells(1)}
+            </tr>
+            <tr>
+              <td className='effHalf yLine'>{this.props.effect.halfEffect}</td>
+              {this.createShowCells(2)}
+            </tr>
+            <tr>
+              <td className='effZero yLine'>{this.props.effect.zeroEffect}</td>
+              {this.createShowCells(3)}
+            </tr>
+            <tr className='xLine'>
+              <td className="blank yLine">
+                {this.createTypeSelected()}
+              </td>
+              <td className='effZero'>×0</td><td className='effHalf'>×½</td>
+              <td className='effNormal'>×1</td><td className='effDouble'>×2</td>
+              <td className="blank">A</td>
+            </tr>
+          </tbody>
+        </table>
+      </div >
     );
   }
 }
