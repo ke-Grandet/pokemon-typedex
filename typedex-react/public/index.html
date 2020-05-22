@@ -21,10 +21,17 @@
     -->
     <title>Pokemon Typedex</title>
 	  <meta name="author" content="Cola King" />
+		<script src='%PUBLIC_URL%/L2D-of-404/L2Dwidget.0.min.js'></script>
+		<script src='%PUBLIC_URL%/L2D-of-404/L2Dwidget.min.js'></script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <div id="live2d-widget">
+      <canvas id="live2dcanvas" width="160" height="320"
+        style="position: fixed; opacity: 0.7; z-index: 99999; pointer-events: none;">
+      </canvas>
+    </div>
     <!--
       You can add webfonts, meta tags, or analytics to this file.
       The build step will place the bundled scripts into the <body> tag.
@@ -33,4 +40,30 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
   </body>
+
+  <script type="text/javascript">
+      L2Dwidget.init({
+          "model": {
+              jsonPath: 
+                  "https://unpkg.com/live2d-widget-model-koharu/assets/koharu.model.json",
+              "scale": 1
+          },
+          "display": {
+              "position": "right",
+              "width": 80,
+              "height": 160,
+              "hOffset": 0,  // horizon 横向位置
+              "vOffset": -20  // vertical 纵向位置
+          },
+          "mobile": {
+              "show": true,
+              "scale": 0.5
+          },
+          "react": {
+              "opacityDefault": 0.7,
+              "opacityOnHover": 0.2
+          }
+      });
+  </script>
+
 </html>
