@@ -36,6 +36,15 @@ class App extends React.Component{
                     arrType={this.state.arrType}
                     mapType={this.state.mapType}
                     effect={effect} />
+                <span>按 WASD 或 ↑←↓→ 可以快速切换选择（除了右侧列表，点击表格中的属性也可以切换选择</span>
+                <ul>
+                    <li>左下角一格为选中的属性</li>
+                    <li>横坐标表示攻击（A → Attack），即 使用该属性的招式攻击其它属性时的伤害倍率</li>
+                    <li>纵坐标表示防御（D → Defence），即 该属性承受其它属性招式攻击时的伤害倍率</li>
+                </ul>
+
+                <br/><hr/><br/>施工区域：<hr style={{border: 0}}/><br/>
+
                 <TypedexDouble key='2'
                     arrType={this.state.arrType} />
                 <TypedexTable key='3'
